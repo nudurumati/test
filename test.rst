@@ -575,6 +575,7 @@ the share type to a tenant.
      -  Available SSDs
      -  Adaptive Flash Cache must be enabled on the HPE 3PAR StoreServ
         Storage array. This is done with the CLI command
+
         .. code-block:: console
 
            cli% createflashcache <size>
