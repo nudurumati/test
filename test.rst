@@ -244,8 +244,10 @@ HPE 3PAR shared file system driver configuration
      the same subnet with the same segmentation ID (if VLAN). There is a limit
      of 4 FSIPs per FPG.
 
-     **Support for ``driver_handles_share_servers`` = ``True`` was added in
-     Liberty.**
+     .. note::
+
+        Support for ``driver_handles_share_servers`` = ``True`` was added in
+        Liberty.
 
      Since Mitaka, when a nested share is deleted (nested shares are created
      when ``hpe3par_fstore_per_share`` is set to ``False``), the file tree is
@@ -294,7 +296,7 @@ HPE 3PAR shared file system driver configuration
      HPE 3PAR WS API Server URL.
 
    ``hpe3par_username``
-     HPE 3PAR username with ``edit`` role and access to all domains to use 
+     HPE 3PAR username with ``edit`` role and access to all domains to use
      with the HPE 3PAR WSAPI.
 
    ``hpe3par_password``
@@ -417,14 +419,14 @@ network access (external to OpenStack) and was set up and configured outside
 of Manila.
 
 In the OpenStack Liberty release, the HPE 3PAR driver could run with or
-without share networks. The configuration option 
+without share networks. The configuration option
 ``driver_handles_share_servers``( ``True`` or ``False`` ) indicates whether
 share networks could be used. When set to ``False``, the HPE 3PAR driver
-behaved as described earlier for Kilo. When set to ``True``, the share 
-network’s subnet, segmentation ID, and IP address range was used to allocate an FSIP on the
-HPE 3PAR. There is a limit of four FSIPs per VFS. For clients to communicate
-with shares via this FSIP, the client must have access to the external
-network using the subnet and segmentation ID of the share network.
+behaved as described earlier for Kilo. When set to ``True``, the share
+network’s subnet, segmentation ID, and IP address range was used to allocate
+an FSIP on the HPE 3PAR. There is a limit of four FSIPs per VFS. For clients
+to communicate with shares via this FSIP, the client must have access to the
+external network using the subnet and segmentation ID of the share network.
 
 For example, the client must be routed to the neutron provider network with
 external access. The Manila host networking configuration and network
@@ -465,8 +467,8 @@ settings determine the subnets visible for HPE 3PAR share access.
 -  User access rules
 
    To allow user access to a share in the horizon UI, find the share in the
-   Project|Manage Compute|Shares view. Use the ``Manage Rules`` action to add a
-   rule. Select user as the access type and enter user name in the 
+   Project|Manage Compute|Shares view. Use the ``Manage Rules`` action to add
+   a rule. Select user as the access type and enter user name in the
    ``Access to`` box.
 
    You can also use the command line to allow user access to a share in the
@@ -479,10 +481,10 @@ settings determine the subnets visible for HPE 3PAR share access.
    The user name must be an HPE 3PAR user.
 
    Share access is different from file system permissions,
-   for example, ACLs on files and folders. If a user wants to read a file, 
+   for example, ACLs on files and folders. If a user wants to read a file,
    the user must have at least read permissions on the share and an ACL that
-   grants him read permissions on the file or folder. Even with 
-   full control share access, it does not mean every user can do 
+   grants him read permissions on the file or folder. Even with
+   full control share access, it does not mean every user can do
    everything due to the additional restrictions of the folder ACLs.
 
    To modify the file or folder ACLs, allow access to an HPE 3PAR File Persona
@@ -491,7 +493,7 @@ settings determine the subnets visible for HPE 3PAR share access.
    modify the ACL or permissions to allow different access than what is
    provided by default.
 
-.. _cg_titles:
+.. _Share types:
 
 Share types
 ~~~~~~~~~~~
@@ -511,8 +513,8 @@ UI or using the command line, as follows:
       –is_public false <name> false
 
 The ``<name>`` is the name of the new share type. False at the end specifies
-``driver_handles_share_servers=False``. The ``driver_handles_share_servers`` 
-setting in the share type needs to match the setting configured for the 
+``driver_handles_share_servers=False``. The ``driver_handles_share_servers``
+setting in the share type needs to match the setting configured for the
 back end in the ``manila.conf`` file.
 
 ``is_public`` is used to indicate whether this share type is applicable to all
@@ -529,7 +531,7 @@ the share type to a tenant.
    The Shared File Systems service requires that the share type include the
    ``driver_handles_share_servers`` extra-spec. This ensures that the share is
    created on a back end that supports the requested
-   ``driver_handles_share_servers`` (share networks) capability. From the 
+   ``driver_handles_share_servers`` (share networks) capability. From the
    Liberty release forward, both ``True`` and ``False`` are supported.
 
    The ``driver_handles_share_servers`` setting in the share type must match
@@ -564,29 +566,29 @@ the share type to a tenant.
    specs used with the capabilities filter and the HPE 3PAR driver:
 
    ``hpe3par_flash_cache``
-     When the value is set to ``<is> True`` (or ``<is> False``), shares of 
-     this type are only created on a back end that uses HPE 3PAR Adaptive 
-     Flash Cache. For Adaptive Flash Cache, the HPE 3PAR StoreServ Storage 
+     When the value is set to ``<is> True`` (or ``<is> False``), shares of
+     this type are only created on a back end that uses HPE 3PAR Adaptive
+     Flash Cache. For Adaptive Flash Cache, the HPE 3PAR StoreServ Storage
      array must meet the following requirements:
 
      -  Adaptive Flash Cache license installed
      -  Available SSDs
      -  Adaptive Flash Cache must be enabled on the HPE 3PAR StoreServ
-        Storage array. This is done with the CLI command 
+        Storage array. This is done with the CLI command
         .. code-block:: console
 
            cli% createflashcache <size>
 
         ``<size>`` must be in 16 GB increments.For example, below command
         will create 128 GB of Flash Cache for each node pair in the array.
-        
+
         .. code-block:: console
 
            cli% createflashcache 128g
-   
+
      -  Adaptive Flash Cache must be enabled for the VV set used by an FPG.
         For example, ``setflashcache vvset:<fpgname>``. The VV set name is the
-        same as the FPG name. 
+        same as the FPG name.
 
         .. note::
 
@@ -596,7 +598,7 @@ the share type to a tenant.
      When the value is set to ``<is> True`` (or ``<is> False``), shares of
      this type are only created on a back end that uses deduplication. For HPE
      3PAR File Persona, the provisioning type is determined when the FPG is
-     created. Using the ``createfpg –tdvv`` option creates an FPG that 
+     created. Using the ``createfpg –tdvv`` option creates an FPG that
      supports both dedupe and thin provisioning. A thin deduplication license
      must be installed to use the tdvv option.
 
@@ -622,7 +624,7 @@ the share type to a tenant.
    ``hpe3par:smb_access_based_enum``
      ``smb_access_based_enum`` (Access Based Enumeration) specifies if users
      can see only the files and directories to which they have been allowed
-     access on the shares. Valid values are ``True`` or ``False``. 
+     access on the shares. Valid values are ``True`` or ``False``.
      The default is ``False``.
 
    ``hpe3par:smb_continuous_avail``
@@ -634,19 +636,19 @@ the share type to a tenant.
      ``smb_cache`` specifies client-side caching for offline files. The
      default value is ``manual``. Valid values are:
 
-     -  ``off`` — the client must not cache any files from this share. The share
-        is configured to disallow caching.
-     
+     -  ``off`` — the client must not cache any files from this share. The
+        share is configured to disallow caching.
+
      -  ``manual`` — the client must allow only manual caching for the files
         open from this share.
 
-     -  ``optimized`` — the client may cache every file that it opens from this
-        share. Also, the client may satisfy the file requests from its local
-        cache. The share is configured to allow automatic caching of programs
-        and documents.
+     -  ``optimized`` — the client may cache every file that it opens from
+        this share. Also, the client may satisfy the file requests from its
+        local cache. The share is configured to allow automatic caching of
+        programs and documents.
 
      -  ``auto`` — the client may cache every file that it opens from this
-        share. The share is configured to allow automatic caching of 
+        share. The share is configured to allow automatic caching of
         documents.
 
    When creating NFS shares, the following HPE 3PAR extra-specs are used:
@@ -730,12 +732,12 @@ Implementation characteristics
 
    -  Network
 
-      The ``driver_handles_share_servers`` configuration setting determines 
-      whether share networks are supported. When 
+      The ``driver_handles_share_servers`` configuration setting determines
+      whether share networks are supported. When
       ``driver_handles_share_servers`` is set to ``True``, a share network is
       required to create a share. The administrator creates share networks
       with the desired network, subnet, IP range, and segmentation ID. The HPE
-      3PAR is configured with an FSIP using the same subnet and 
+      3PAR is configured with an FSIP using the same subnet and
       segmentation ID and an IP address allocated from the neutron network.
       Using share network-specific IP addresses, subnets, and segmentation IDs
       give the appearance of better tenant isolation. Shares on an FPG,
@@ -750,7 +752,7 @@ Implementation characteristics
       an array or back end needs to be restricted to one or more specific
       tenants, share types can be used to influence the selection of a
       back end. For more information on using share types,
-      see :ref:`cg_titles` .
+      see `Share types`_ .
 
    -  Tenant limit
 
